@@ -15,10 +15,23 @@ var App = React.createClass({
 		}
 	},
 	componentWillMount : function(){
-		var ref = new FireBase(rootUrl + 'items/');
-		this.fb = ref; 
-		this.bindAsObject(ref,'items');
-		this.fb.on('value',this.handleDataLoaded);
+		// var ref = new FireBase(rootUrl + 'items/');
+		// this.fb = ref; 
+		// this.bindAsObject(ref,'items');
+		// this.fb.on('value',this.handleDataLoaded);
+
+		$.ajax({
+			url: '/api/items',
+			type: 'GET'
+		})
+		.done(function(data) {
+			var items = _.indexBy(data, '_id');
+			// console.log(items)
+			this.setState({
+				items : items
+			})
+			this.handleDataLoaded
+		}.bind(this));
 	},
 	render : function(){
 		return <div className="row panel panel-default">
@@ -26,11 +39,11 @@ var App = React.createClass({
 				<h2 className="text-center">
 					To-Do List
 				</h2>
-				<Header itemsStore={this.firebaseRefs.items} />
+				<Header />
 				<hr />
 				<div className={"content"+ (this.state.loaded ? 'loaded' : '')} >
 					<List items={this.state.items} />
-					{ !_.isNull(this.state.items) ? this.deleteButton() : null }
+					 { this.deleteButton() }
 				</div>
 
 			</div>
@@ -43,21 +56,15 @@ var App = React.createClass({
 		if (!this.state.loaded) {
 			return null
 		} else {
-			var count = 0;
-			for(var key in this.state.items){
-				if (count > 1) {
-					return <div className="text-center clear-complete">
-						<hr />
-						<button 
-							type="button"
-							className="btn btn-danger clear-complete"
-							onClick={this.onDeleteClick}>
-							Clear Complete
-						</button>
-					</div>
-				};
-				count++
-			}
+			return <div className="text-center clear-complete">
+				<hr />
+				<button 
+					type="button"
+					className="btn btn-danger clear-complete"
+					onClick={this.onDeleteClick}>
+					Clear Complete
+				</button>
+			</div>
 		}
 	},
 	onDeleteClick : function(){

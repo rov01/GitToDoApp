@@ -20,10 +20,22 @@ var App = React.createClass({
 		};
 	},
 	componentWillMount: function componentWillMount() {
-		var ref = new FireBase(rootUrl + 'items/');
-		this.fb = ref;
-		this.bindAsObject(ref, 'items');
-		this.fb.on('value', this.handleDataLoaded);
+		// var ref = new FireBase(rootUrl + 'items/');
+		// this.fb = ref;
+		// this.bindAsObject(ref,'items');
+		// this.fb.on('value',this.handleDataLoaded);
+
+		$.ajax({
+			url: '/api/items',
+			type: 'GET'
+		}).done((function (data) {
+			var items = _.indexBy(data, '_id');
+			// console.log(items)
+			this.setState({
+				items: items
+			});
+			this.handleDataLoaded;
+		}).bind(this));
 	},
 	render: function render() {
 		return React.createElement(
@@ -37,13 +49,13 @@ var App = React.createClass({
 					{ className: 'text-center' },
 					'To-Do List'
 				),
-				React.createElement(Header, { itemsStore: this.firebaseRefs.items }),
+				React.createElement(Header, null),
 				React.createElement('hr', null),
 				React.createElement(
 					'div',
 					{ className: "content" + (this.state.loaded ? 'loaded' : '') },
 					React.createElement(List, { items: this.state.items }),
-					!_.isNull(this.state.items) ? this.deleteButton() : null
+					this.deleteButton()
 				)
 			)
 		);
@@ -55,25 +67,19 @@ var App = React.createClass({
 		if (!this.state.loaded) {
 			return null;
 		} else {
-			var count = 0;
-			for (var key in this.state.items) {
-				if (count > 1) {
-					return React.createElement(
-						'div',
-						{ className: 'text-center clear-complete' },
-						React.createElement('hr', null),
-						React.createElement(
-							'button',
-							{
-								type: 'button',
-								className: 'btn btn-danger clear-complete',
-								onClick: this.onDeleteClick },
-							'Clear Complete'
-						)
-					);
-				};
-				count++;
-			}
+			return React.createElement(
+				'div',
+				{ className: 'text-center clear-complete' },
+				React.createElement('hr', null),
+				React.createElement(
+					'button',
+					{
+						type: 'button',
+						className: 'btn btn-danger clear-complete',
+						onClick: this.onDeleteClick },
+					'Clear Complete'
+				)
+			);
 		}
 	},
 	onDeleteClick: function onDeleteClick() {
@@ -126,11 +132,22 @@ module.exports = React.createClass({
 		);
 	},
 	handleClick: function handleClick(event) {
-		this.props.itemsStore.push({
-			text: this.state.text,
-			done: false
-		});
-		this.setState({ text: '' });
+		$.ajax({
+			url: '/api/items',
+			type: 'POST',
+			data: {
+				text: this.state.text,
+				done: false
+			}
+		}).done((function (data) {
+			this.setState({ text: '' });
+		}).bind(this));
+
+		// this.props.itemsStore.push({
+		// 	text : this.state.text,
+		// 	done : false
+		// })
+		// this.setState({ text : ''})
 	},
 	handleInputChange: function handleInputChange(event) {
 		this.setState({ text: event.target.value });
@@ -167,6 +184,9 @@ module.exports = React.createClass({
 				item.key = key;
 				list.push(React.createElement(ListItem, { item: item, key: key }));
 			};
+			// var list = this.props.items.map(function(item){
+			// 	<ListItem item={item} key={item.key} ></ListItem>
+			// }.bind(this))
 
 			return list;
 		}
@@ -188,9 +208,6 @@ module.exports = React.createClass({
 			done: this.props.item.done,
 			textChanged: false
 		};
-	},
-	componentWillMount: function componentWillMount() {
-		this.fb = new Firebase(rootUrl + 'items/' + this.props.item.key);
 	},
 	render: function render() {
 		return React.createElement(
@@ -225,6 +242,7 @@ module.exports = React.createClass({
 		);
 	},
 	changeButtons: function changeButtons() {
+		console.log(this.state);
 		if (this.state.textChanged) {
 			return React.createElement(
 				'span',
@@ -251,16 +269,16 @@ module.exports = React.createClass({
 	handleDoneChange: function handleDoneChange(event) {
 		var update = { done: event.target.checked };
 		this.setState(update);
-		this.fb.update(update);
+		// this.fb.update(update)
 	},
 	handleTextChange: function handleTextChange(event) {
 		this.setState({ text: event.target.value, textChanged: true });
 	},
 	handleDeleteClick: function handleDeleteClick(event) {
-		this.fb.remove();
+		// this.fb.remove();
 	},
 	handleSaveClick: function handleSaveClick(event) {
-		this.fb.update({ text: this.state.text });
+		// this.fb.update({text:this.state.text})
 		this.setState({ textChanged: false });
 	},
 	handleUndoClick: function handleUndoClick(event) {

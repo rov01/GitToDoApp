@@ -21,6 +21,9 @@ module.exports = React.createClass({
 					<ListItem item={item} key={key}></ListItem>
 				)
 			};
+			// var list = this.props.items.map(function(item){
+			// 	<ListItem item={item} key={item.key} ></ListItem>
+			// }.bind(this))
 
 			return list
 		}

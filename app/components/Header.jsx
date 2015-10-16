@@ -24,11 +24,23 @@ module.exports = React.createClass({
 		</div>
 	},
 	handleClick : function(event){
-		this.props.itemsStore.push({
-			text : this.state.text,
-			done : false
+		$.ajax({
+			url: '/api/items',
+			type: 'POST',
+			data: {
+				text : this.state.text,
+				done : false
+			}
 		})
-		this.setState({ text : ''})
+		.done(function(data) {
+			this.setState({ text : ''})
+		}.bind(this))
+
+		// this.props.itemsStore.push({
+		// 	text : this.state.text,
+		// 	done : false
+		// })
+		// this.setState({ text : ''})
 	},
 	handleInputChange : function(event){
 		this.setState({ text : event.target.value})

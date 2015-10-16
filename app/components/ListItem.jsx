@@ -1,5 +1,5 @@
 var React = require('react');
-var rootUrl 	= 'https://note-take.firebaseio.com/';
+var rootUrl = 'https://note-take.firebaseio.com/';
 
 
 module.exports = React.createClass({
@@ -9,9 +9,6 @@ module.exports = React.createClass({
 			done : this.props.item.done,
 			textChanged : false
 		}
-	},
-	componentWillMount : function(){
-		this.fb = new Firebase(rootUrl+'items/' + this.props.item.key )
 	},
 	render : function(){
 		return <div className="input-group">
@@ -38,6 +35,7 @@ module.exports = React.createClass({
 		</div>
 	},
 	changeButtons : function(){
+			console.log(this.state)
 		if (this.state.textChanged) {
 			return <span>
 				<button 
@@ -58,16 +56,16 @@ module.exports = React.createClass({
 	handleDoneChange : function(event){
 		var update = {done:event.target.checked};
 		this.setState(update)
-		this.fb.update(update)
+		// this.fb.update(update)
 	},
 	handleTextChange : function(event){
 		this.setState({text:event.target.value, textChanged : true})
 	},
 	handleDeleteClick : function(event){
-		this.fb.remove();
+		// this.fb.remove();
 	},
 	handleSaveClick : function(event){
-		this.fb.update({text:this.state.text})
+		// this.fb.update({text:this.state.text})
 		this.setState({textChanged : false})
 	},
 	handleUndoClick : function(event){
