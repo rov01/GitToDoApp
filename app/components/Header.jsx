@@ -1,10 +1,12 @@
-var React = require('react');
+var React 	= require('react');
+var _ 		= require('underscore');
 
 module.exports = React.createClass({
 	getInitialState : function(){
 		return {
-			text : ''
-		}
+			text : '',
+			items : this.props.items
+		};
 	},
 	render : function(){
 		return <div className="input-group">
@@ -33,14 +35,8 @@ module.exports = React.createClass({
 			}
 		})
 		.done(function(data) {
-			this.setState({ text : ''})
-		}.bind(this))
-
-		// this.props.itemsStore.push({
-		// 	text : this.state.text,
-		// 	done : false
-		// })
-		// this.setState({ text : ''})
+			console.log(data)
+		}.bind(this));
 	},
 	handleInputChange : function(event){
 		this.setState({ text : event.target.value})

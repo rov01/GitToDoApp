@@ -13,18 +13,14 @@ module.exports = React.createClass({
 				Add a todo to get Start
 			</h4>
 		}else{
-			var list = []
+			var list = [];
 			for (var key in this.props.items) {
 				var item = this.props.items[key];
-				item.key = key;
+				item.key = item._id;
 				list.push(
 					<ListItem item={item} key={key}></ListItem>
 				)
 			};
-			// var list = this.props.items.map(function(item){
-			// 	<ListItem item={item} key={item.key} ></ListItem>
-			// }.bind(this))
-
 			return list
 		}
 	}

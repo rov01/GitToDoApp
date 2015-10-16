@@ -6,13 +6,12 @@ router.get('/',function(req,res){
 	.sort('-date')
 	.exec(function(err,items){
 		if (err) {
-			res.json({msg : "something error"})
+			return res.status(400).json({msg : "something error"})
 		}else{
-			res.status(200).json(items);
+			return res.status(200).json(items);
 		};
-	})
-
-})
+	});
+});
 
 router.post('/',function(req,res){
 	var item = new Item({
@@ -22,13 +21,40 @@ router.post('/',function(req,res){
 
 	item.save(function(err,item){
 		if (err) {
-			console.log(err);
-		 	return res.status(400).json({msg:"save unsuccessful"})
+		 	return res.status(400).json({msg:"save unsuccessfully"})
 		} else {
 			return res.status(200).json(item);
 		};
-	})
+	});
 });
 
+router.put('/:id',function(req,res){
+	Item.findOneAndUpdate({
+		_id : req.params.id
+	},{
+		$set : {
+			text : req.body.text,
+			done : req.body.done
+		}
+	},function(err,item){
+		if (err) {
+			return res.status(400).json({msg : "update unsuccessfully"})
+		} else {
+			return res.status(200).json(item);
+		}
+	});
+});
+
+router.delete('/:id',function(req,res){
+	Item.findOneAndRemove({
+		_id : req.params.id
+	},function(err){
+		if (err) {
+			return res.status(400).json({msg: "remove unsuccessfully"});
+		} else {
+			return res.status(200).json({msg : "remove successfully"})
+		}
+	});
+});
 
 module.exports = router;

@@ -1,13 +1,9 @@
 var React 		= require('react');
-var ReactFire 	= require('reactfire');
-var FireBase 	= require('firebase');
 var List 		= require('./components/List.jsx');
-var Header 		= require('./components/Header.jsx')
-var rootUrl 	= 'https://note-take.firebaseio.com/';
+var Header 		= require('./components/Header.jsx');
 var _ 			= require('underscore');
 
 var App = React.createClass({
-	mixins : [ReactFire],
 	getInitialState : function(){
 		return {
 			items : {},
@@ -15,20 +11,13 @@ var App = React.createClass({
 		}
 	},
 	componentWillMount : function(){
-		// var ref = new FireBase(rootUrl + 'items/');
-		// this.fb = ref; 
-		// this.bindAsObject(ref,'items');
-		// this.fb.on('value',this.handleDataLoaded);
-
 		$.ajax({
 			url: '/api/items',
 			type: 'GET'
 		})
 		.done(function(data) {
-			var items = _.indexBy(data, '_id');
-			// console.log(items)
 			this.setState({
-				items : items
+				items : data
 			})
 			this.handleDataLoaded
 		}.bind(this));
@@ -39,9 +28,9 @@ var App = React.createClass({
 				<h2 className="text-center">
 					To-Do List
 				</h2>
-				<Header />
+				<Header items={this.state.items} />
 				<hr />
-				<div className={"content"+ (this.state.loaded ? 'loaded' : '')} >
+				<div >
 					<List items={this.state.items} />
 					 { this.deleteButton() }
 				</div>
