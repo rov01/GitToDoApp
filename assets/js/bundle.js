@@ -1,6 +1,63 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var alt = require('../alt');
+
+var HeaderActions = (function () {
+	function HeaderActions() {
+		_classCallCheck(this, HeaderActions);
+
+		this.generateActions('addNewItemSuccess', 'addNewItemFail', 'handleInputChange');
+	}
+
+	_createClass(HeaderActions, [{
+		key: 'addNewItem',
+		value: function addNewItem(text) {
+			var _this = this;
+
+			$.ajax({
+				url: '/api/items',
+				type: 'POST',
+				data: {
+					text: text,
+					done: false
+				}
+			}).done(function (data) {
+				_this.actions.addNewItemSuccess(data);
+			}).fail(function (data) {
+				_this.actions.addNewItemFail(data);
+			});
+		}
+	}]);
+
+	return HeaderActions;
+})();
+
+module.exports = alt.createActions(HeaderActions);
+
+},{"../alt":2}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _alt = require('alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+exports['default'] = new _alt2['default']();
+module.exports = exports['default'];
+
+},{"alt":"alt"}],3:[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 var List = require('./components/List.jsx');
 var Header = require('./components/Header.jsx');
@@ -83,20 +140,28 @@ var App = React.createClass({
 var element = React.createElement(App, {});
 React.render(element, document.querySelector('.container'));
 
-},{"./components/Header.jsx":2,"./components/List.jsx":3,"react":"react","underscore":"underscore"}],2:[function(require,module,exports){
+},{"./components/Header.jsx":4,"./components/List.jsx":5,"react":"react","underscore":"underscore"}],4:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var _ = require('underscore');
+var HeaderActions = require('../actions/HeaderActions.jsx');
+var HeaderStores = require('../stores/HeaderStores.jsx');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 	getInitialState: function getInitialState() {
-		return {
-			text: '',
-			items: this.props.items
-		};
+		return HeaderStores.getState();
+	},
+	componentDidMount: function componentDidMount() {
+		HeaderStores.listen(this.onChange);
+	},
+	componentWillMount: function componentWillMount() {
+		HeaderStores.unlisten(this.onChange);
+	},
+	onChange: function onChange(state) {
+		this.setState(state);
 	},
 	render: function render() {
 		return React.createElement(
@@ -106,7 +171,7 @@ module.exports = React.createClass({
 				type: 'text',
 				className: 'form-control',
 				value: this.state.text,
-				onChange: this.handleInputChange }),
+				onChange: HeaderActions.handleInputChange }),
 			React.createElement(
 				'span',
 				{ className: 'input-group-btn' },
@@ -114,33 +179,17 @@ module.exports = React.createClass({
 					'button',
 					{
 						className: 'btn btn-default',
-						onClick: this.handleClick,
+						onClick: HeaderActions.addNewItem.bind(this, this.state.text),
 						type: 'button'
 					},
 					' Add'
 				)
 			)
 		);
-	},
-	handleClick: function handleClick(event) {
-		location.reload();
-		$.ajax({
-			url: '/api/items',
-			type: 'POST',
-			data: {
-				text: this.state.text,
-				done: false
-			}
-		}).done((function (data) {
-			this.setState({ text: '' });
-		}).bind(this));
-	},
-	handleInputChange: function handleInputChange(event) {
-		this.setState({ text: event.target.value });
 	}
 });
 
-},{"react":"react","underscore":"underscore"}],3:[function(require,module,exports){
+},{"../actions/HeaderActions.jsx":1,"../stores/HeaderStores.jsx":7,"react":"react","underscore":"underscore"}],5:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -175,10 +224,11 @@ module.exports = React.createClass({
 	}
 });
 
-},{"./ListItem.jsx":4,"react":"react"}],4:[function(require,module,exports){
+},{"./ListItem.jsx":6,"react":"react"}],6:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
+
 module.exports = React.createClass({
 	displayName: "exports",
 
@@ -294,4 +344,44 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":"react"}]},{},[1]);
+},{"react":"react"}],7:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var alt = require('../alt');
+var HeaderActions = require('../actions/HeaderActions.jsx');
+
+var HeaderStore = (function () {
+	function HeaderStore() {
+		_classCallCheck(this, HeaderStore);
+
+		this.bindActions(HeaderActions);
+		this.text = '';
+	}
+
+	_createClass(HeaderStore, [{
+		key: 'onAddNewItemSuccess',
+		value: function onAddNewItemSuccess(item) {
+			this.text = '';
+		}
+	}, {
+		key: 'onAddNewItemFail',
+		value: function onAddNewItemFail(msg) {
+			console.log(msg);
+		}
+	}, {
+		key: 'onHandleInputChange',
+		value: function onHandleInputChange(event) {
+			this.text = event.target.value;
+		}
+	}]);
+
+	return HeaderStore;
+})();
+
+module.exports = alt.createStore(HeaderStore);
+
+},{"../actions/HeaderActions.jsx":1,"../alt":2}]},{},[3]);

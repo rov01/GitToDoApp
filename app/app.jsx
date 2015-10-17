@@ -9,6 +9,7 @@ var App = React.createClass({
 			items : {},
 			loaded : false
 		}
+		
 	},
 	componentWillMount : function(){
 		$.ajax({

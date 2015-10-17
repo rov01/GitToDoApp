@@ -1,12 +1,20 @@
-var React 	= require('react');
-var _ 		= require('underscore');
+var React 		  = require('react');
+var _ 			  = require('underscore');
+var HeaderActions = require('../actions/HeaderActions.jsx');
+var HeaderStores  = require('../stores/HeaderStores.jsx')
 
 module.exports = React.createClass({
 	getInitialState : function(){
-		return {
-			text : '',
-			items : this.props.items
-		};
+		return HeaderStores.getState();
+	},
+	componentDidMount : function(){
+		HeaderStores.listen(this.onChange);
+	},
+	componentWillMount : function(){
+		HeaderStores.unlisten(this.onChange)
+	},
+	onChange(state){
+		this.setState(state)
 	},
 	render : function(){
 		return <div className="input-group">
@@ -14,32 +22,15 @@ module.exports = React.createClass({
 				type="text" 
 				className="form-control"
 				value={this.state.text}
-				onChange={this.handleInputChange} />
+				onChange={HeaderActions.handleInputChange} />
 			<span className="input-group-btn">
 				<button 
 					className="btn btn-default"
-					onClick={this.handleClick}
+					onClick={HeaderActions.addNewItem.bind(this,this.state.text)}
 					type="button"
 					> Add 
 				</button>
 			</span>
 		</div>
-	},
-	handleClick : function(event){
-		location.reload();
-		$.ajax({
-			url: '/api/items',
-			type: 'POST',
-			data: {
-				text : this.state.text,
-				done : false
-			}
-		})
-		.done(function(data) {
-			this.setState({ text : '' })
-		}.bind(this));
-	},
-	handleInputChange : function(event){
-		this.setState({ text : event.target.value})
 	}
 })
