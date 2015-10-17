@@ -123,6 +123,7 @@ module.exports = React.createClass({
 		);
 	},
 	handleClick: function handleClick(event) {
+		location.reload();
 		$.ajax({
 			url: '/api/items',
 			type: 'POST',
@@ -131,7 +132,7 @@ module.exports = React.createClass({
 				done: false
 			}
 		}).done((function (data) {
-			console.log(data);
+			this.setState({ text: '' });
 		}).bind(this));
 	},
 	handleInputChange: function handleInputChange(event) {
