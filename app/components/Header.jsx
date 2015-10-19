@@ -1,9 +1,9 @@
-var React 		  = require('react');
-var _ 			  = require('underscore');
-var HeaderActions = require('../actions/HeaderActions.jsx');
-var HeaderStores  = require('../stores/HeaderStores.jsx')
+import React 		   from 'react'
+import _ 			   from 'underscore'
+import HeaderActions   from '../actions/HeaderActions.jsx'
+import HeaderStores    from '../stores/HeaderStores.jsx'
 
-module.exports = React.createClass({
+export default  React.createClass({
 	getInitialState : function(){
 		return HeaderStores.getState();
 	},

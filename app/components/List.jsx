@@ -1,7 +1,7 @@
-var React = require('react');
-var ListItem = require('./ListItem.jsx');
+import React  	 from 'react';
+import ListItem  from './ListItem.jsx';
 
-module.exports = React.createClass({
+export default React.createClass({
 	render : function(){
 		return <div>
 			{this.renderList()}

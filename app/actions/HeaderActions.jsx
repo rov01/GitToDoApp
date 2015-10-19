@@ -1,4 +1,4 @@
-var alt = require('../alt');
+import alt from '../alt';
 
 class HeaderActions {
 	constructor(){
@@ -27,4 +27,4 @@ class HeaderActions {
 	}
 }
 
-module.exports = alt.createActions(HeaderActions)
+export default alt.createActions(HeaderActions)

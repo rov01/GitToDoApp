@@ -1,11 +1,19 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var alt = require('../alt');
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
 
 var HeaderActions = (function () {
 	function HeaderActions() {
@@ -37,7 +45,8 @@ var HeaderActions = (function () {
 	return HeaderActions;
 })();
 
-module.exports = alt.createActions(HeaderActions);
+exports['default'] = _alt2['default'].createActions(HeaderActions);
+module.exports = exports['default'];
 
 },{"../alt":2}],2:[function(require,module,exports){
 'use strict';
@@ -58,12 +67,25 @@ module.exports = exports['default'];
 },{"alt":"alt"}],3:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var List = require('./components/List.jsx');
-var Header = require('./components/Header.jsx');
-var _ = require('underscore');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var App = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentsListJsx = require('./components/List.jsx');
+
+var _componentsListJsx2 = _interopRequireDefault(_componentsListJsx);
+
+var _componentsHeaderJsx = require('./components/Header.jsx');
+
+var _componentsHeaderJsx2 = _interopRequireDefault(_componentsHeaderJsx);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var App = _react2['default'].createClass({
 	displayName: 'App',
 
 	getInitialState: function getInitialState() {
@@ -84,23 +106,23 @@ var App = React.createClass({
 		}).bind(this));
 	},
 	render: function render() {
-		return React.createElement(
+		return _react2['default'].createElement(
 			'div',
 			{ className: 'row panel panel-default' },
-			React.createElement(
+			_react2['default'].createElement(
 				'div',
 				{ className: 'col-md-8 col-md-offset-2' },
-				React.createElement(
+				_react2['default'].createElement(
 					'h2',
 					{ className: 'text-center' },
 					'To-Do List'
 				),
-				React.createElement(Header, { items: this.state.items }),
-				React.createElement('hr', null),
-				React.createElement(
+				_react2['default'].createElement(_componentsHeaderJsx2['default'], { items: this.state.items }),
+				_react2['default'].createElement('hr', null),
+				_react2['default'].createElement(
 					'div',
 					null,
-					React.createElement(List, { items: this.state.items }),
+					_react2['default'].createElement(_componentsListJsx2['default'], { items: this.state.items }),
 					this.deleteButton()
 				)
 			)
@@ -113,11 +135,11 @@ var App = React.createClass({
 		if (!this.state.loaded) {
 			return null;
 		} else {
-			return React.createElement(
+			return _react2['default'].createElement(
 				'div',
 				{ className: 'text-center clear-complete' },
-				React.createElement('hr', null),
-				React.createElement(
+				_react2['default'].createElement('hr', null),
+				_react2['default'].createElement(
 					'button',
 					{
 						type: 'button',
@@ -137,49 +159,66 @@ var App = React.createClass({
 	}
 });
 
-var element = React.createElement(App, {});
-React.render(element, document.querySelector('.container'));
+var element = _react2['default'].createElement(App, {});
+_react2['default'].render(element, document.querySelector('.container'));
 
 },{"./components/Header.jsx":4,"./components/List.jsx":5,"react":"react","underscore":"underscore"}],4:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('underscore');
-var HeaderActions = require('../actions/HeaderActions.jsx');
-var HeaderStores = require('../stores/HeaderStores.jsx');
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
 
-module.exports = React.createClass({
-	displayName: 'exports',
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _actionsHeaderActionsJsx = require('../actions/HeaderActions.jsx');
+
+var _actionsHeaderActionsJsx2 = _interopRequireDefault(_actionsHeaderActionsJsx);
+
+var _storesHeaderStoresJsx = require('../stores/HeaderStores.jsx');
+
+var _storesHeaderStoresJsx2 = _interopRequireDefault(_storesHeaderStoresJsx);
+
+exports['default'] = _react2['default'].createClass({
+	displayName: 'Header',
 
 	getInitialState: function getInitialState() {
-		return HeaderStores.getState();
+		return _storesHeaderStoresJsx2['default'].getState();
 	},
 	componentDidMount: function componentDidMount() {
-		HeaderStores.listen(this.onChange);
+		_storesHeaderStoresJsx2['default'].listen(this.onChange);
 	},
 	componentWillMount: function componentWillMount() {
-		HeaderStores.unlisten(this.onChange);
+		_storesHeaderStoresJsx2['default'].unlisten(this.onChange);
 	},
 	onChange: function onChange(state) {
 		this.setState(state);
 	},
 	render: function render() {
-		return React.createElement(
+		return _react2['default'].createElement(
 			'div',
 			{ className: 'input-group' },
-			React.createElement('input', {
+			_react2['default'].createElement('input', {
 				type: 'text',
 				className: 'form-control',
 				value: this.state.text,
-				onChange: HeaderActions.handleInputChange }),
-			React.createElement(
+				onChange: _actionsHeaderActionsJsx2['default'].handleInputChange }),
+			_react2['default'].createElement(
 				'span',
 				{ className: 'input-group-btn' },
-				React.createElement(
+				_react2['default'].createElement(
 					'button',
 					{
 						className: 'btn btn-default',
-						onClick: HeaderActions.addNewItem.bind(this, this.state.text),
+						onClick: _actionsHeaderActionsJsx2['default'].addNewItem.bind(this, this.state.text),
 						type: 'button'
 					},
 					' Add'
@@ -188,18 +227,30 @@ module.exports = React.createClass({
 		);
 	}
 });
+module.exports = exports['default'];
 
 },{"../actions/HeaderActions.jsx":1,"../stores/HeaderStores.jsx":7,"react":"react","underscore":"underscore"}],5:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var ListItem = require('./ListItem.jsx');
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
 
-module.exports = React.createClass({
-	displayName: 'exports',
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ListItemJsx = require('./ListItem.jsx');
+
+var _ListItemJsx2 = _interopRequireDefault(_ListItemJsx);
+
+exports['default'] = _react2['default'].createClass({
+	displayName: 'List',
 
 	render: function render() {
-		return React.createElement(
+		return _react2['default'].createElement(
 			'div',
 			null,
 			this.renderList()
@@ -207,7 +258,7 @@ module.exports = React.createClass({
 	},
 	renderList: function renderList() {
 		if (!this.props.items) {
-			return React.createElement(
+			return _react2['default'].createElement(
 				'h4',
 				{ className: 'text-center' },
 				'Add a todo to get Start'
@@ -217,20 +268,29 @@ module.exports = React.createClass({
 			for (var key in this.props.items) {
 				var item = this.props.items[key];
 				item.key = item._id;
-				list.push(React.createElement(ListItem, { item: item, key: key }));
+				list.push(_react2['default'].createElement(_ListItemJsx2['default'], { item: item, key: key }));
 			};
 			return list;
 		}
 	}
 });
+module.exports = exports['default'];
 
 },{"./ListItem.jsx":6,"react":"react"}],6:[function(require,module,exports){
 "use strict";
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-module.exports = React.createClass({
-	displayName: "exports",
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+exports["default"] = _react2["default"].createClass({
+	displayName: "ListItem",
 
 	getInitialState: function getInitialState() {
 		return {
@@ -241,28 +301,28 @@ module.exports = React.createClass({
 		};
 	},
 	render: function render() {
-		return React.createElement(
+		return _react2["default"].createElement(
 			"div",
 			{ className: "input-group" },
-			React.createElement(
+			_react2["default"].createElement(
 				"span",
 				{ className: "input-group-addon" },
-				React.createElement("input", {
+				_react2["default"].createElement("input", {
 					type: "checkbox",
 					checked: this.state.done,
 					onChange: this.handleDoneChange })
 			),
-			React.createElement("input", {
+			_react2["default"].createElement("input", {
 				type: "text",
 				value: this.state.text,
 				disabled: this.state.done,
 				className: "form-control",
 				onChange: this.handleTextChange }),
-			React.createElement(
+			_react2["default"].createElement(
 				"span",
 				{ className: "input-group-btn" },
 				this.changeButtons(),
-				React.createElement(
+				_react2["default"].createElement(
 					"button",
 					{
 						className: "btn btn-danger",
@@ -274,17 +334,17 @@ module.exports = React.createClass({
 	},
 	changeButtons: function changeButtons() {
 		if (this.state.textChanged) {
-			return React.createElement(
+			return _react2["default"].createElement(
 				"span",
 				null,
-				React.createElement(
+				_react2["default"].createElement(
 					"button",
 					{
 						className: "btn btn-success",
 						onClick: this.handleSaveClick },
 					"Save"
 				),
-				React.createElement(
+				_react2["default"].createElement(
 					"button",
 					{
 						className: "btn btn-primary",
@@ -320,7 +380,7 @@ module.exports = React.createClass({
 			type: 'DELETE'
 		}).done((function (data) {
 			var node = this.getDOMNode();
-			React.unmountComponentAtNode(node);
+			_react2["default"].unmountComponentAtNode(node);
 			$(node).remove();
 		}).bind(this));
 	},
@@ -343,22 +403,34 @@ module.exports = React.createClass({
 		});
 	}
 });
+module.exports = exports["default"];
 
 },{"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var alt = require('../alt');
-var HeaderActions = require('../actions/HeaderActions.jsx');
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _actionsHeaderActionsJsx = require('../actions/HeaderActions.jsx');
+
+var _actionsHeaderActionsJsx2 = _interopRequireDefault(_actionsHeaderActionsJsx);
 
 var HeaderStore = (function () {
 	function HeaderStore() {
 		_classCallCheck(this, HeaderStore);
 
-		this.bindActions(HeaderActions);
+		this.bindActions(_actionsHeaderActionsJsx2['default']);
 		this.text = '';
 	}
 
@@ -382,6 +454,7 @@ var HeaderStore = (function () {
 	return HeaderStore;
 })();
 
-module.exports = alt.createStore(HeaderStore);
+exports['default'] = _alt2['default'].createStore(HeaderStore);
+module.exports = exports['default'];
 
 },{"../actions/HeaderActions.jsx":1,"../alt":2}]},{},[3]);

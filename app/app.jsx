@@ -1,7 +1,7 @@
-var React 		= require('react');
-var List 		= require('./components/List.jsx');
-var Header 		= require('./components/Header.jsx');
-var _ 			= require('underscore');
+import React 	from 'react';
+import List  	from './components/List.jsx';
+import Header 	from './components/Header.jsx';
+import _ 		from 'underscore'
 
 var App = React.createClass({
 	getInitialState : function(){

@@ -1,12 +1,11 @@
-var alt = require('../alt');
-var HeaderActions = require('../actions/HeaderActions.jsx');
+import alt  from '../alt';
+import HeaderActions from '../actions/HeaderActions.jsx';
 
 class HeaderStore {
 	constructor(){
 		this.bindActions(HeaderActions);
 		this.text = '';
 	}
-
 	onAddNewItemSuccess(item){
 		this.text = '';
 	};
@@ -20,4 +19,4 @@ class HeaderStore {
 
 }
 
-module.exports = alt.createStore(HeaderStore);
+export default alt.createStore(HeaderStore);
